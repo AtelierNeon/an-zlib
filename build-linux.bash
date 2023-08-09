@@ -19,6 +19,7 @@ PROJECT_GCC_CXX_COMPILER_NAME="${MY_PROJECT_GCC_CXX_COMPILER_NAME:=g++-11}"
 PROJECT_GCC_LD_NAME="${MY_PROJECT_GCC_LD_NAME:=ld}"
 PROJECT_GCC_OS_NAME="${MY_PROJECT_GCC_OS_NAME:=linux}"
 PROJECT_REVISION="${BUILD_NUMBER:=9999}"
+PROJECT_RELEASE_TYPE="${MY_PROJECT_RELEASE_TYPE:=Debug}"
 PROJECT_SHOULD_DISABLE_32BIT_BUILD="${MY_PROJECT_SHOULD_DISABLE_32BIT_BUILD:=OFF}"
 PROJECT_SHOULD_DISABLE_64BIT_BUILD="${MY_PROJECT_SHOULD_DISABLE_64BIT_BUILD:=OFF}"
 PROJECT_SHOULD_DISABLE_ARM_BUILD="${MY_PROJECT_SHOULD_DISABLE_ARM_BUILD:=OFF}"
@@ -46,6 +47,12 @@ fi
 if [ "ON" = "$PROJECT_SHOULD_DISABLE_X86_BUILD" ]; then
     MY_GCC_ARCH_BUILD_TOGGLE_MAP["x86_64"]="OFF"
 fi
+
+
+
+## Print build information
+echo "[Linux] Project information: revision:" $PROJECT_REVISION
+echo "[Linux] Project information: release type:" $PROJECT_RELEASE_TYPE
 
 
 
@@ -166,7 +173,7 @@ else
 
     # Compile project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
-    $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config Debug
+    $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
@@ -176,7 +183,7 @@ else
 
     # Install project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ..."
-    $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config Debug
+    $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
@@ -241,7 +248,7 @@ else
 
     # Compile project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
-    $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config Debug
+    $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
@@ -251,7 +258,7 @@ else
 
     # Install project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ..."
-    $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config Debug
+    $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
@@ -316,7 +323,7 @@ else
 
     # Compile project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
-    $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config Debug
+    $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
@@ -326,7 +333,7 @@ else
 
     # Install project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ..."
-    $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config Debug
+    $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
