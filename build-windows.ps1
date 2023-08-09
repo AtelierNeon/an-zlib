@@ -118,12 +118,12 @@ Write-Information "[PowerShell] Project information: CMake install prefix: `"$Te
 
 
 ## Detect source folder
-Write-Information "[PowerShell] Detecting $SourceFolder ..."
+Write-Information "[PowerShell] Detecting $SourceFolder folder ..."
 if (-not (Test-Path -Path $SourceFolder)) {
     Write-Error "[PowerShell] Detecting $SourceFolder folder ... NOT FOUND"
     Exit 1
 }
-Write-Information "[PowerShell] Detecting $SourceFolder ... FOUND"
+Write-Information "[PowerShell] Detecting $SourceFolder folder ... FOUND"
 
 
 
