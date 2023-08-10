@@ -2,7 +2,7 @@
 ## Built-in config
 ##
 $InformationPreference = 'Continue'
-$VerbosePreference = 'Continue'
+#$VerbosePreference = 'Continue'
 
 ##
 ## Global config
