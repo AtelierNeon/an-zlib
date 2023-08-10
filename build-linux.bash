@@ -153,8 +153,11 @@ else
     echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
-    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$MY_GCC_ARCH
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $TEMP_INSTALL_DIR/$MY_GCC_ARCH)
+    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_BUILD_DIR
+    MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_INSTALL_DIR
+    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
 
     # Generate project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
@@ -228,8 +231,11 @@ else
     echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
-    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$MY_GCC_ARCH
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $TEMP_INSTALL_DIR/$MY_GCC_ARCH)
+    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_BUILD_DIR
+    MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_INSTALL_DIR
+    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
 
     # Generate project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
@@ -303,8 +309,11 @@ else
     echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
-    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$MY_GCC_ARCH
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $TEMP_INSTALL_DIR/$MY_GCC_ARCH)
+    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_BUILD_DIR
+    MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_INSTALL_DIR
+    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
 
     # Generate project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
