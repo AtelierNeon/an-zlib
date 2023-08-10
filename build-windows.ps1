@@ -19,7 +19,6 @@ $SourceFolder = 'source'
 $TempRootFolder = 'temp'
 $TempBuildFolder = Join-Path -Path $TempRootFolder -ChildPath 'b'
 $TempInstallFolder = Join-Path -Path $TempRootFolder -ChildPath 'i'
-$TempInstallFolderAbs = Resolve-Path $TempInstallFolder
 
 ##
 ## Project config
@@ -113,7 +112,6 @@ Write-Information "[PowerShell] Project information: release type: `"$ProjectRel
 Write-Information "[PowerShell] Project information: CMake generator: `"$MyCmakeGenerator`""
 Write-Information "[PowerShell] Project information: CMake toolset: `"$ProjectToolset`""
 Write-Information "[PowerShell] Project information: CMake platform to build: $MyCmakePlatformToBuildListString"
-Write-Information "[PowerShell] Project information: CMake install prefix: `"$TempInstallFolderAbs`""
 
 
 
@@ -194,7 +192,8 @@ if (-not ('ON'.Equals($MyCmakePlatformToBuildToggleMap[$MyCmakePlatform]))) {
 } else {
     $MyTempBuildFolder = Join-Path -Path $TempBuildFolder -ChildPath $ProjectReleaseType
     $MyTempBuildFolder = Join-Path -Path $MyTempBuildFolder -ChildPath $MyCmakePlatform
-    $MyTempInstallFolderAbs = Join-Path -Path $TempInstallFolderAbs -ChildPath $ProjectReleaseType
+    $MyTempInstallFolderAbs = Resolve-Path $TempInstallFolder
+    $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $ProjectReleaseType
     $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $MyCmakePlatform
 
     ## Build project for platform $MyCmakePlatform - Generate project
@@ -300,7 +299,8 @@ if (-not ('ON'.Equals($MyCmakePlatformToBuildToggleMap[$MyCmakePlatform]))) {
 } else {
     $MyTempBuildFolder = Join-Path -Path $TempBuildFolder -ChildPath $ProjectReleaseType
     $MyTempBuildFolder = Join-Path -Path $MyTempBuildFolder -ChildPath $MyCmakePlatform
-    $MyTempInstallFolderAbs = Join-Path -Path $TempInstallFolderAbs -ChildPath $ProjectReleaseType
+    $MyTempInstallFolderAbs = Resolve-Path $TempInstallFolder
+    $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $ProjectReleaseType
     $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $MyCmakePlatform
 
     ## Build project for platform $MyCmakePlatform - Generate project
@@ -409,7 +409,8 @@ if (-not ('ON'.Equals($MyCmakePlatformToBuildToggleMap[$MyCmakePlatform]))) {
 } else {
     $MyTempBuildFolder = Join-Path -Path $TempBuildFolder -ChildPath $ProjectReleaseType
     $MyTempBuildFolder = Join-Path -Path $MyTempBuildFolder -ChildPath $MyCmakePlatform
-    $MyTempInstallFolderAbs = Join-Path -Path $TempInstallFolderAbs -ChildPath $ProjectReleaseType
+    $MyTempInstallFolderAbs = Resolve-Path $TempInstallFolder
+    $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $ProjectReleaseType
     $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $MyCmakePlatform
 
     ## Build project for platform $MyCmakePlatform - Generate project
@@ -515,7 +516,8 @@ if (-not ('ON'.Equals($MyCmakePlatformToBuildToggleMap[$MyCmakePlatform]))) {
 } else {
     $MyTempBuildFolder = Join-Path -Path $TempBuildFolder -ChildPath $ProjectReleaseType
     $MyTempBuildFolder = Join-Path -Path $MyTempBuildFolder -ChildPath $MyCmakePlatform
-    $MyTempInstallFolderAbs = Join-Path -Path $TempInstallFolderAbs -ChildPath $ProjectReleaseType
+    $MyTempInstallFolderAbs = Resolve-Path $TempInstallFolder
+    $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $ProjectReleaseType
     $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $MyCmakePlatform
 
     ## Build project for platform $MyCmakePlatform - Generate project
@@ -624,7 +626,8 @@ if (-not ('ON'.Equals($MyCmakePlatformToBuildToggleMap[$MyCmakePlatform]))) {
 } else {
     $MyTempBuildFolder = Join-Path -Path $TempBuildFolder -ChildPath $ProjectReleaseType
     $MyTempBuildFolder = Join-Path -Path $MyTempBuildFolder -ChildPath $MyCmakePlatform
-    $MyTempInstallFolderAbs = Join-Path -Path $TempInstallFolderAbs -ChildPath $ProjectReleaseType
+    $MyTempInstallFolderAbs = Resolve-Path $TempInstallFolder
+    $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $ProjectReleaseType
     $MyTempInstallFolderAbs = Join-Path -Path $MyTempInstallFolderAbs -ChildPath $MyCmakePlatform
 
     ## Build project for platform $MyCmakePlatform - Generate project
