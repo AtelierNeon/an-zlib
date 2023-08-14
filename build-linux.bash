@@ -28,6 +28,12 @@ PROJECT_SHOULD_DISABLE_X86_BUILD="${MY_PROJECT_SHOULD_DISABLE_X86_BUILD:=OFF}"
 ##
 ## My variables
 ##
+MY_CMAKE_COMMON_ARGUMENT_LIST=(
+        "-S $SOURCE_DIR"
+        "-DCMAKE_SYSTEM_NAME=Linux"
+        "-DCMAKE_SYSTEM_PROCESSOR=arm"
+        "-DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY"
+)
 declare -A MY_GCC_ARCH_BUILD_TOGGLE_MAP=(
         ["aarch64"]="ON"
         ["arm"]="ON"
@@ -153,17 +159,27 @@ else
     echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
-    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$MY_GCC_ARCH
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $TEMP_INSTALL_DIR/$MY_GCC_ARCH)
+    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_BUILD_DIR
+    MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_INSTALL_DIR
+    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
 
     # Generate project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ..."
-    $CMAKE_CLI -S $SOURCE_DIR -B $MY_TEMP_BUILD_DIR --install-prefix $MY_TEMP_INSTALL_DIR_ABS \
-            -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=arm \
-            -DCMAKE_AR=$MY_GCC_AR_CLI -DCMAKE_C_COMPILER=$MY_GCC_C_COMPILER_CLI \
-            -DCMAKE_CXX_COMPILER=$MY_GCC_CXX_COMPILER_CLI -DCMAKE_LINKER=$MY_GCC_LD_CLI \
-            -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
+    MY_CMAKE_ARGUMENT_LIST=(
+            "-B $MY_TEMP_BUILD_DIR"
+            "--install-prefix $MY_TEMP_INSTALL_DIR_ABS"
+            "-DCMAKE_AR=$MY_GCC_AR_CLI"
+            "-DCMAKE_C_COMPILER=$MY_GCC_C_COMPILER_CLI"
+            "-DCMAKE_CXX_COMPILER=$MY_GCC_CXX_COMPILER_CLI"
+            "-DCMAKE_LINKER=$MY_GCC_LD_CLI"
+    )
+    MY_CMAKE_ARGUMENT_LIST=(${MY_CMAKE_COMMON_ARGUMENT_LIST[@]} ${MY_CMAKE_ARGUMENT_LIST[@]})
+    MY_CMAKE_ARGUMENT_LIST_STRING=$(IFS=' ' eval 'echo "${MY_CMAKE_ARGUMENT_LIST[*]}"')
+    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
+    $CMAKE_CLI $MY_CMAKE_ARGUMENT_LIST_STRING
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
@@ -228,17 +244,27 @@ else
     echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
-    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$MY_GCC_ARCH
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $TEMP_INSTALL_DIR/$MY_GCC_ARCH)
+    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_BUILD_DIR
+    MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_INSTALL_DIR
+    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
 
     # Generate project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ..."
-    $CMAKE_CLI -S $SOURCE_DIR -B $MY_TEMP_BUILD_DIR --install-prefix $MY_TEMP_INSTALL_DIR_ABS \
-            -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=arm \
-            -DCMAKE_AR=$MY_GCC_AR_CLI -DCMAKE_C_COMPILER=$MY_GCC_C_COMPILER_CLI \
-            -DCMAKE_CXX_COMPILER=$MY_GCC_CXX_COMPILER_CLI -DCMAKE_LINKER=$MY_GCC_LD_CLI \
-            -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
+    MY_CMAKE_ARGUMENT_LIST=(
+            "-B $MY_TEMP_BUILD_DIR"
+            "--install-prefix $MY_TEMP_INSTALL_DIR_ABS"
+            "-DCMAKE_AR=$MY_GCC_AR_CLI"
+            "-DCMAKE_C_COMPILER=$MY_GCC_C_COMPILER_CLI"
+            "-DCMAKE_CXX_COMPILER=$MY_GCC_CXX_COMPILER_CLI"
+            "-DCMAKE_LINKER=$MY_GCC_LD_CLI"
+    )
+    MY_CMAKE_ARGUMENT_LIST=(${MY_CMAKE_COMMON_ARGUMENT_LIST[@]} ${MY_CMAKE_ARGUMENT_LIST[@]})
+    MY_CMAKE_ARGUMENT_LIST_STRING=$(IFS=' ' eval 'echo "${MY_CMAKE_ARGUMENT_LIST[*]}"')
+    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
+    $CMAKE_CLI $MY_CMAKE_ARGUMENT_LIST_STRING
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
@@ -303,17 +329,27 @@ else
     echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
-    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$MY_GCC_ARCH
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $TEMP_INSTALL_DIR/$MY_GCC_ARCH)
+    MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_BUILD_DIR
+    MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
+    mkdir -p $MY_TEMP_INSTALL_DIR
+    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
 
     # Generate project
     echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
     echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ..."
-    $CMAKE_CLI -S $SOURCE_DIR -B $MY_TEMP_BUILD_DIR --install-prefix $MY_TEMP_INSTALL_DIR_ABS \
-            -DCMAKE_SYSTEM_NAME=Linux -DCMAKE_SYSTEM_PROCESSOR=arm \
-            -DCMAKE_AR=$MY_GCC_AR_CLI -DCMAKE_C_COMPILER=$MY_GCC_C_COMPILER_CLI \
-            -DCMAKE_CXX_COMPILER=$MY_GCC_CXX_COMPILER_CLI -DCMAKE_LINKER=$MY_GCC_LD_CLI \
-            -DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY
+    MY_CMAKE_ARGUMENT_LIST=(
+            "-B $MY_TEMP_BUILD_DIR"
+            "--install-prefix $MY_TEMP_INSTALL_DIR_ABS"
+            "-DCMAKE_AR=$MY_GCC_AR_CLI"
+            "-DCMAKE_C_COMPILER=$MY_GCC_C_COMPILER_CLI"
+            "-DCMAKE_CXX_COMPILER=$MY_GCC_CXX_COMPILER_CLI"
+            "-DCMAKE_LINKER=$MY_GCC_LD_CLI"
+    )
+    MY_CMAKE_ARGUMENT_LIST=(${MY_CMAKE_COMMON_ARGUMENT_LIST[@]} ${MY_CMAKE_ARGUMENT_LIST[@]})
+    MY_CMAKE_ARGUMENT_LIST_STRING=$(IFS=' ' eval 'echo "${MY_CMAKE_ARGUMENT_LIST[*]}"')
+    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
+    $CMAKE_CLI $MY_CMAKE_ARGUMENT_LIST_STRING
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
         echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
