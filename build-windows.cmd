@@ -15,7 +15,7 @@ if "%ERRORLEVEL%" neq "0" (
     echo [Windows] Detecting Windows PowerShell ...
     set POWERSHELL=powershell
     !POWERSHELL! /? 1>nul 2>&1
-    if "!POWERSHELL!" neq "0" (
+    if "!ERRORLEVEL!" neq "0" (
         echo [Windows] Detecting Windows PowerShell ... NOT FOUND
         echo [Windows] Aborted ...
         exit /b 9009
@@ -41,7 +41,7 @@ if not exist .\%POWERSHELL_SCRIPT% (
 
 rem !POWERSHELL! -ExecutionPolicy Unrestricted -File .\%POWERSHELL_SCRIPT% -Config Release
 !POWERSHELL! -ExecutionPolicy Unrestricted -File .\%POWERSHELL_SCRIPT%
-if "%ERRORLEVEL%" neq "0" (
+if "!ERRORLEVEL!" neq "0" (
     echo [Windows] Something wrong in running %POWERSHELL_SCRIPT%.
     echo [Windows] Aborting ...
 ) else (
