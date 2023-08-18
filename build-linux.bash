@@ -20,6 +20,7 @@ PROJECT_GCC_LD_NAME="${MY_PROJECT_GCC_LD_NAME:=ld}"
 PROJECT_GCC_OS_NAME="${MY_PROJECT_GCC_OS_NAME:=linux}"
 PROJECT_REVISION="${BUILD_NUMBER:=9999}"
 PROJECT_RELEASE_TYPE="${MY_PROJECT_RELEASE_TYPE:=Debug}"
+PROJECT_SHOULD_DISABLE_CLEAN_BUILD="${MY_PROJECT_SHOULD_DISABLE_CLEAN_BUILD:=OFF}"
 PROJECT_SHOULD_DISABLE_32BIT_BUILD="${MY_PROJECT_SHOULD_DISABLE_32BIT_BUILD:=OFF}"
 PROJECT_SHOULD_DISABLE_64BIT_BUILD="${MY_PROJECT_SHOULD_DISABLE_64BIT_BUILD:=OFF}"
 PROJECT_SHOULD_DISABLE_ARM_BUILD="${MY_PROJECT_SHOULD_DISABLE_ARM_BUILD:=OFF}"
@@ -63,6 +64,7 @@ fi
 ## Print build information
 echo "[Linux] Project information: revision:" $PROJECT_REVISION
 echo "[Linux] Project information: release type:" $PROJECT_RELEASE_TYPE
+echo "[Linux] Project information: Disable clean build: $PROJECT_SHOULD_DISABLE_CLEAN_BUILD"
 echo "[Linux] Project information: Zlib with disabled test apps: $PROJECT_ZLIB_WITH_DISABLED_TEST_APPS"
 
 
@@ -77,33 +79,40 @@ echo "[Linux] Detecting $SOURCE_DIR folder ... FOUND"
 
 
 
-## Clean temp folder
-echo "[Linux] Cleaning $TEMP_ROOT_DIR folder ..."
-if [ -d $TEMP_ROOT_DIR ] ; then
-    echo "[Linux] Removing $TEMP_ROOT_DIR folder ..."
-    rm -rf $TEMP_ROOT_DIR 1>/dev/null 2>&1
+## Create or clean temp folder
+if [ ! "ON" = "$PROJECT_SHOULD_DISABLE_CLEAN_BUILD" ]; then
+    echo "[Linux] Cleaning $TEMP_ROOT_DIR folder ..."
+    if [ -d $TEMP_ROOT_DIR ] ; then
+        echo "[Linux] Removing $TEMP_ROOT_DIR folder ..."
+        rm -rf $TEMP_ROOT_DIR 1>/dev/null 2>&1
+        MY_CHECK_RESULT=$?
+        if [ $MY_CHECK_RESULT -ne 0 ] ; then
+            echo "[Linux] Remove $TEMP_ROOT_DIR folder ... FAILED"
+            exit 1
+        fi
+    fi
+    echo "[Linux] Cleaning $TEMP_ROOT_DIR folder ... DONE"
+fi
+if [ ! -d $TEMP_BUILD_DIR ] ; then
+    echo "[Linux] Creating $TEMP_BUILD_DIR folder ..."
+    mkdir -p $TEMP_BUILD_DIR 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Remove $TEMP_ROOT_DIR folder ... FAILED"
+        echo "[Linux] Creating $TEMP_BUILD_DIR folder ... FAILED"
         exit 1
     fi
+    echo "[Linux] Creating $TEMP_BUILD_DIR folder ... DONE"
 fi
-echo "[Linux] Creating $TEMP_BUILD_DIR folder ..."
-mkdir -p $TEMP_BUILD_DIR 1>/dev/null 2>&1
-MY_CHECK_RESULT=$?
-if [ $MY_CHECK_RESULT -ne 0 ] ; then
-    echo "[Linux] Creating $TEMP_BUILD_DIR folder ... FAILED"
-    exit 1
+if [ ! -d $TEMP_INSTALL_DIR ] ; then
+    echo "[Linux] Creating $TEMP_INSTALL_DIR folder ..."
+    mkdir -p $TEMP_INSTALL_DIR 1>/dev/null 2>&1
+    MY_CHECK_RESULT=$?
+    if [ $MY_CHECK_RESULT -ne 0 ] ; then
+        echo "[Linux] Creating $TEMP_INSTALL_DIR folder ... FAILED"
+        exit 1
+    fi
+    echo "[Linux] Creating $TEMP_INSTALL_DIR folder ... DONE"
 fi
-echo "[Linux] Cleaning $TEMP_BUILD_DIR folder ... DONE"
-echo "[Linux] Creating $TEMP_INSTALL_DIR folder ..."
-mkdir -p $TEMP_INSTALL_DIR 1>/dev/null 2>&1
-MY_CHECK_RESULT=$?
-if [ $MY_CHECK_RESULT -ne 0 ] ; then
-    echo "[Linux] Creating $TEMP_INSTALL_DIR folder ... FAILED"
-    exit 1
-fi
-echo "[Linux] Cleaning $TEMP_INSTALL_DIR folder ... DONE"
 
 
 
