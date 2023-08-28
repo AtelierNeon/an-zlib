@@ -7,10 +7,10 @@ CMAKE_CLI=/usr/bin/cmake
 DIRNAME_CLI=/usr/bin/dirname
 PWD_CLI=/usr/bin/pwd
 REALPATH_CLI=/usr/bin/realpath
-SCRIPT_DIR=$(cd -- "$(${DIRNAME_CLI} -- "${BASH_SOURCE[0]}")" &> /dev/null && ${PWD_CLI} )
+SCRIPT_DIR=$(cd -- "$(${DIRNAME_CLI} -- "${BASH_SOURCE[0]}")" &> /dev/null && ${PWD_CLI})
 PROJECT_DIR=$SCRIPT_DIR/..
-SOURCE_DIR=source
-TEMP_ROOT_DIR=temp
+SOURCE_DIR=$PROJECT_DIR
+TEMP_ROOT_DIR=$PROJECT_DIR/temp
 TEMP_BUILD_DIR=$TEMP_ROOT_DIR/b
 TEMP_INSTALL_DIR=$TEMP_ROOT_DIR/i
 

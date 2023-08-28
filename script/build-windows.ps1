@@ -15,7 +15,7 @@ $CmakeToolsetToGeneratorMap = @{
         'v142' = 'Visual Studio 16 2019'
         'v143' = 'Visual Studio 17 2022'
 }
-$ProjectFolder = $PSScriptRoot
+$ProjectFolder = Join-Path -Path $PSScriptRoot -ChildPath '..'
 $SourceFolder = $ProjectFolder
 $TempRootFolder = Join-Path -Path $ProjectFolder -ChildPath 'temp'
 $TempBuildFolder = Join-Path -Path $TempRootFolder -ChildPath 'b'
