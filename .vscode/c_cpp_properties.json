@@ -1,0 +1,25 @@
+{
+    "version": 4,
+    "configurations": [
+        {
+            "name": "Linux",
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "includePath": [
+                "${workspaceFolder}/source/**",
+                "${workspaceFolder}/temp/vscode/**"
+            ]
+        },
+        {
+            "name": "Win32",
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "includePath": [
+                "${workspaceFolder}/source/**",
+                "${workspaceFolder}/temp/vscode/**"
+            ]
+        }
+    ]
+}
