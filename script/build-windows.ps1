@@ -17,8 +17,8 @@ $CmakeToolsetToGeneratorMap = @{
 }
 $ProjectFolder = Join-Path -Path $PSScriptRoot -ChildPath '..'
 $SourceFolder = $ProjectFolder
-$TempRootFolder = Join-Path -Path $ProjectFolder -ChildPath 'temp'
-$TempBuildFolder = Join-Path -Path $TempRootFolder -ChildPath 'b'
+$TempRootFolder = Join-Path -Path $ProjectFolder -ChildPath 'build'
+$TempBuildFolder = Join-Path -Path $TempRootFolder -ChildPath 't'
 $TempInstallFolder = Join-Path -Path $TempRootFolder -ChildPath 'i'
 
 ##

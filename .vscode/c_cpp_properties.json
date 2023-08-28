@@ -8,7 +8,7 @@
             "configurationProvider": "ms-vscode.cmake-tools",
             "includePath": [
                 "${workspaceFolder}/source/**",
-                "${workspaceFolder}/temp/vscode/**"
+                "${workspaceFolder}/build/vscode/**"
             ]
         },
         {
@@ -18,7 +18,7 @@
             "configurationProvider": "ms-vscode.cmake-tools",
             "includePath": [
                 "${workspaceFolder}/source/**",
-                "${workspaceFolder}/temp/vscode/**"
+                "${workspaceFolder}/build/vscode/**"
             ]
         }
     ]
