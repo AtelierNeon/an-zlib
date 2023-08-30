@@ -4,11 +4,13 @@
 ## Global config
 ##
 DIRNAME_CLI=/usr/bin/dirname
-PWD_CLI=/usr/bin/pwd
+PWD_CLI=/bin/pwd
+UNAME_CLI=/usr/bin/uname
+SYSTEM_PLATFORM=$($UNAME_CLI)
 
-echo "[Linux] Applying preset options ..."
+echo "[$SYSTEM_PLATFORM] Applying preset options ..."
 MY_PROJECT_ZLIB_WITH_DISABLED_TEST_APPS=ON
-echo "[Linux] Applying default options ... DONE"
+echo "[$SYSTEM_PLATFORM] Applying default options ... DONE"
 
-SCRIPT_DIR=$(cd -- "$(${DIRNAME_CLI} -- "${BASH_SOURCE[0]}")" &> /dev/null && ${PWD_CLI})
+SCRIPT_DIR=$(cd -- "$(${DIRNAME_CLI} "${BASH_SOURCE[0]:-${(%):-%x}}")" &> /dev/null && ${PWD_CLI})
 source $SCRIPT_DIR/build-linux.bash

@@ -3,11 +3,12 @@
 ##
 ## Global config
 ##
-CMAKE_CLI=/usr/bin/cmake
+CMAKE_CLI=cmake
 DIRNAME_CLI=/usr/bin/dirname
-PWD_CLI=/usr/bin/pwd
-REALPATH_CLI=/usr/bin/realpath
-SCRIPT_DIR=$(cd -- "$(${DIRNAME_CLI} -- "${BASH_SOURCE[0]}")" &> /dev/null && ${PWD_CLI})
+PWD_CLI=/bin/pwd
+UNAME_CLI=/usr/bin/uname
+SCRIPT_DIR=$(cd -- "$(${DIRNAME_CLI} "${BASH_SOURCE[0]:-${(%):-%x}}")" &> /dev/null && ${PWD_CLI})
+SYSTEM_PLATFORM=$($UNAME_CLI)
 PROJECT_DIR=$SCRIPT_DIR/..
 SOURCE_DIR=$PROJECT_DIR
 TEMP_ROOT_DIR=$PROJECT_DIR/build
@@ -66,90 +67,78 @@ fi
 
 
 ## Print build information
-echo "[Linux] Project information: revision:" $PROJECT_REVISION
-echo "[Linux] Project information: release type:" $PROJECT_RELEASE_TYPE
-echo "[Linux] Project information: Disable clean build: $PROJECT_SHOULD_DISABLE_CLEAN_BUILD"
-echo "[Linux] Project information: Zlib with disabled test apps: $PROJECT_ZLIB_WITH_DISABLED_TEST_APPS"
+echo "[$SYSTEM_PLATFORM] Project information: revision:" $PROJECT_REVISION
+echo "[$SYSTEM_PLATFORM] Project information: release type:" $PROJECT_RELEASE_TYPE
+echo "[$SYSTEM_PLATFORM] Project information: Disable clean build: $PROJECT_SHOULD_DISABLE_CLEAN_BUILD"
+echo "[$SYSTEM_PLATFORM] Project information: Zlib with disabled test apps: $PROJECT_ZLIB_WITH_DISABLED_TEST_APPS"
 
 
 
 ## Detect source folder
-echo "[Linux] Detecting $SOURCE_DIR folder ..."
+echo "[$SYSTEM_PLATFORM] Detecting $SOURCE_DIR folder ..."
 if [ ! -d $SOURCE_DIR ] ; then
-    echo "[Linux] Detecting $SOURCE_DIR folder ... NOT FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting $SOURCE_DIR folder ... NOT FOUND"
     exit 1
 fi
-echo "[Linux] Detecting $SOURCE_DIR folder ... FOUND"
+echo "[$SYSTEM_PLATFORM] Detecting $SOURCE_DIR folder ... FOUND"
 
 
 
 ## Create or clean temp folder
 if [ ! "ON" = "$PROJECT_SHOULD_DISABLE_CLEAN_BUILD" ]; then
-    echo "[Linux] Cleaning $TEMP_ROOT_DIR folder ..."
+    echo "[$SYSTEM_PLATFORM] Cleaning $TEMP_ROOT_DIR folder ..."
     if [ -d $TEMP_ROOT_DIR ] ; then
-        echo "[Linux] Removing $TEMP_ROOT_DIR folder ..."
+        echo "[$SYSTEM_PLATFORM] Removing $TEMP_ROOT_DIR folder ..."
         rm -rf $TEMP_ROOT_DIR 1>/dev/null 2>&1
         MY_CHECK_RESULT=$?
         if [ $MY_CHECK_RESULT -ne 0 ] ; then
-            echo "[Linux] Remove $TEMP_ROOT_DIR folder ... FAILED"
+            echo "[$SYSTEM_PLATFORM] Remove $TEMP_ROOT_DIR folder ... FAILED"
             exit 1
         fi
     fi
-    echo "[Linux] Cleaning $TEMP_ROOT_DIR folder ... DONE"
+    echo "[$SYSTEM_PLATFORM] Cleaning $TEMP_ROOT_DIR folder ... DONE"
 fi
 if [ ! -d $TEMP_BUILD_DIR ] ; then
-    echo "[Linux] Creating $TEMP_BUILD_DIR folder ..."
+    echo "[$SYSTEM_PLATFORM] Creating $TEMP_BUILD_DIR folder ..."
     mkdir -p $TEMP_BUILD_DIR 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Creating $TEMP_BUILD_DIR folder ... FAILED"
+        echo "[$SYSTEM_PLATFORM] Creating $TEMP_BUILD_DIR folder ... FAILED"
         exit 1
     fi
-    echo "[Linux] Creating $TEMP_BUILD_DIR folder ... DONE"
+    echo "[$SYSTEM_PLATFORM] Creating $TEMP_BUILD_DIR folder ... DONE"
 fi
 if [ ! -d $TEMP_INSTALL_DIR ] ; then
-    echo "[Linux] Creating $TEMP_INSTALL_DIR folder ..."
+    echo "[$SYSTEM_PLATFORM] Creating $TEMP_INSTALL_DIR folder ..."
     mkdir -p $TEMP_INSTALL_DIR 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Creating $TEMP_INSTALL_DIR folder ... FAILED"
+        echo "[$SYSTEM_PLATFORM] Creating $TEMP_INSTALL_DIR folder ... FAILED"
         exit 1
     fi
-    echo "[Linux] Creating $TEMP_INSTALL_DIR folder ... DONE"
+    echo "[$SYSTEM_PLATFORM] Creating $TEMP_INSTALL_DIR folder ... DONE"
 fi
 
 
 
 ## Detect CMake
-echo "[Linux] Detecting CMake ..."
+echo "[$SYSTEM_PLATFORM] Detecting CMake ..."
 $CMAKE_CLI --help 1>/dev/null 2>&1
 MY_CHECK_RESULT=$?
 if [ $MY_CHECK_RESULT -ne 0 ] ; then
-    echo "[Linux] Detecting CMake ... NOT FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting CMake ... NOT FOUND"
     exit 1
 fi
-echo "[Linux] Detecting CMake ... FOUND"
-
-
-
-## Detect realpath
-echo "[Linux] Detecting realpath ..."
-$REALPATH_CLI --help 1>/dev/null 2>&1
-MY_CHECK_RESULT=$?
-if [ $MY_CHECK_RESULT -ne 0 ] ; then
-    echo "[Linux] Detecting realpath ... NOT FOUND"
-    exit 1
-fi
-echo "[Linux] Detecting realpath ... FOUND"
+echo "[$SYSTEM_PLATFORM] Detecting CMake ... FOUND"
 
 
 
 ## Build project for architecture x86_64 / gnu
 MY_GCC_ABI=gnu
 MY_GCC_ARCH=x86_64
-echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ..."
+echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ..."
 if [ "${MY_GCC_ARCH_BUILD_TOGGLE_MAP[$MY_GCC_ARCH]}" = "OFF" ] ; then
-    echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... SKIPPED"
+    echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... SKIPPED"
 else
     # Define GCC CLI path
     MY_GCC_LIB_BASE_PATH=/usr/lib/$MY_GCC_ARCH-$PROJECT_GCC_OS_NAME-$MY_GCC_ABI
@@ -162,31 +151,31 @@ else
     $MY_GCC_C_COMPILER_CLI --help 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... NOT FOUND"
+        echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... NOT FOUND"
         exit 1
     fi
-    echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Detect CXX Compiler
-    echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ..."
+    echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ..."
     $MY_GCC_CXX_COMPILER_CLI --help 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... NOT FOUND"
+        echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ... NOT FOUND"
         exit 1
     fi
-    echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
     MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
     mkdir -p $MY_TEMP_BUILD_DIR
     MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
     mkdir -p $MY_TEMP_INSTALL_DIR
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
+    MY_TEMP_INSTALL_DIR_ABS=$(cd -- "$(${DIRNAME_CLI} "${MY_TEMP_INSTALL_DIR}")" &> /dev/null && ${PWD_CLI})
 
     # Generate project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ..."
     MY_CMAKE_ARGUMENT_LIST=(
             "-B $MY_TEMP_BUILD_DIR"
             "--install-prefix $MY_TEMP_INSTALL_DIR_ABS"
@@ -198,35 +187,35 @@ else
     )
     MY_CMAKE_ARGUMENT_LIST=(${MY_CMAKE_COMMON_ARGUMENT_LIST[@]} ${MY_CMAKE_ARGUMENT_LIST[@]})
     MY_CMAKE_ARGUMENT_LIST_STRING=$(IFS=' ' eval 'echo "${MY_CMAKE_ARGUMENT_LIST[*]}"')
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
     $CMAKE_CLI $MY_CMAKE_ARGUMENT_LIST_STRING
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... DONE"
 
     # Compile project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
     $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ... DONE"
 
     # Install project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ..."
     $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... DONE"
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... DONE"
 fi
 
 
@@ -234,9 +223,9 @@ fi
 ## Build project for architecture arm / gnueabihf
 MY_GCC_ABI=gnueabihf
 MY_GCC_ARCH=arm
-echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ..."
+echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ..."
 if [ "${MY_GCC_ARCH_BUILD_TOGGLE_MAP[$MY_GCC_ARCH]}" = "OFF" ] ; then
-    echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... SKIPPED"
+    echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... SKIPPED"
 else
     # Define GCC CLI path
     MY_GCC_LIB_BASE_PATH=/usr/lib/$MY_GCC_ARCH-$PROJECT_GCC_OS_NAME-$MY_GCC_ABI
@@ -249,31 +238,31 @@ else
     $MY_GCC_C_COMPILER_CLI --help 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... NOT FOUND"
+        echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... NOT FOUND"
         exit 1
     fi
-    echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Detect CXX Compiler
-    echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ..."
+    echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ..."
     $MY_GCC_CXX_COMPILER_CLI --help 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... NOT FOUND"
+        echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ... NOT FOUND"
         exit 1
     fi
-    echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
     MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
     mkdir -p $MY_TEMP_BUILD_DIR
     MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
     mkdir -p $MY_TEMP_INSTALL_DIR
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
+    MY_TEMP_INSTALL_DIR_ABS=$(cd -- "$(${DIRNAME_CLI} "${MY_TEMP_INSTALL_DIR}")" &> /dev/null && ${PWD_CLI})
 
     # Generate project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ..."
     MY_CMAKE_ARGUMENT_LIST=(
             "-B $MY_TEMP_BUILD_DIR"
             "--install-prefix $MY_TEMP_INSTALL_DIR_ABS"
@@ -285,35 +274,35 @@ else
     )
     MY_CMAKE_ARGUMENT_LIST=(${MY_CMAKE_COMMON_ARGUMENT_LIST[@]} ${MY_CMAKE_ARGUMENT_LIST[@]})
     MY_CMAKE_ARGUMENT_LIST_STRING=$(IFS=' ' eval 'echo "${MY_CMAKE_ARGUMENT_LIST[*]}"')
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
     $CMAKE_CLI $MY_CMAKE_ARGUMENT_LIST_STRING
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... DONE"
 
     # Compile project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
     $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ... DONE"
 
     # Install project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ..."
     $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... DONE"
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... DONE"
 fi
 
 
@@ -321,9 +310,9 @@ fi
 ## Build project for architecture aarch64 / gnu
 MY_GCC_ABI=gnu
 MY_GCC_ARCH=aarch64
-echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ..."
+echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ..."
 if [ "${MY_GCC_ARCH_BUILD_TOGGLE_MAP[$MY_GCC_ARCH]}" = "OFF" ] ; then
-    echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... SKIPPED"
+    echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... SKIPPED"
 else
     # Define GCC CLI path
     MY_GCC_LIB_BASE_PATH=/usr/lib/$MY_GCC_ARCH-$PROJECT_GCC_OS_NAME-$MY_GCC_ABI
@@ -336,31 +325,31 @@ else
     $MY_GCC_C_COMPILER_CLI --help 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... NOT FOUND"
+        echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... NOT FOUND"
         exit 1
     fi
-    echo "[Linux] Detecting C Compiler for $MY_GCC_ARCH ... FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting C Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Detect CXX Compiler
-    echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ..."
+    echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ..."
     $MY_GCC_CXX_COMPILER_CLI --help 1>/dev/null 2>&1
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... NOT FOUND"
+        echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ... NOT FOUND"
         exit 1
     fi
-    echo "[Linux] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
+    echo "[$SYSTEM_PLATFORM] Detecting CXX Compiler for $MY_GCC_ARCH ... FOUND"
 
     # Define build / install path
     MY_TEMP_BUILD_DIR=$TEMP_BUILD_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
     mkdir -p $MY_TEMP_BUILD_DIR
     MY_TEMP_INSTALL_DIR=$TEMP_INSTALL_DIR/$PROJECT_RELEASE_TYPE/$MY_GCC_ARCH
     mkdir -p $MY_TEMP_INSTALL_DIR
-    MY_TEMP_INSTALL_DIR_ABS=$($REALPATH_CLI $MY_TEMP_INSTALL_DIR)
+    MY_TEMP_INSTALL_DIR_ABS=$(cd -- "$(${DIRNAME_CLI} "${MY_TEMP_INSTALL_DIR}")" &> /dev/null && ${PWD_CLI})
 
     # Generate project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ..."
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ..."
     MY_CMAKE_ARGUMENT_LIST=(
             "-B $MY_TEMP_BUILD_DIR"
             "--install-prefix $MY_TEMP_INSTALL_DIR_ABS"
@@ -372,33 +361,33 @@ else
     )
     MY_CMAKE_ARGUMENT_LIST=(${MY_CMAKE_COMMON_ARGUMENT_LIST[@]} ${MY_CMAKE_ARGUMENT_LIST[@]})
     MY_CMAKE_ARGUMENT_LIST_STRING=$(IFS=' ' eval 'echo "${MY_CMAKE_ARGUMENT_LIST[*]}"')
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... argument list:" $MY_CMAKE_ARGUMENT_LIST_STRING
     $CMAKE_CLI $MY_CMAKE_ARGUMENT_LIST_STRING
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Generating project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Generating project ... DONE"
 
     # Compile project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ..."
     $CMAKE_CLI --build $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Compiling project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Compiling project ... DONE"
 
     # Install project
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ..."
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ..."
     $CMAKE_CLI --install $MY_TEMP_BUILD_DIR --config $PROJECT_RELEASE_TYPE
     MY_CHECK_RESULT=$?
     if [ $MY_CHECK_RESULT -ne 0 ] ; then
-        echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
+        echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ... FAILED (ExitCode: $MY_CHECK_RESULT)"
         exit 1
     fi
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... Installing project ... DONE"
-    echo "[Linux] Building project for platform $MY_GCC_ARCH ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... Installing project ... DONE"
+    echo "[$SYSTEM_PLATFORM] Building project for platform $MY_GCC_ARCH ... DONE"
 fi
