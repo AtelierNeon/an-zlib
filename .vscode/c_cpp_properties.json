@@ -12,6 +12,16 @@
             ]
         },
         {
+            "name": "Mac",
+            "cStandard": "c99",
+            "cppStandard": "c++11",
+            "configurationProvider": "ms-vscode.cmake-tools",
+            "includePath": [
+                "${workspaceFolder}/source/**",
+                "${workspaceFolder}/build/vscode/**"
+            ]
+        },
+        {
             "name": "Win32",
             "cStandard": "c99",
             "cppStandard": "c++11",
