@@ -9,3 +9,4 @@ temp/
 *.tmp
 *.userprefs
 .DS_Store
+foo.gz
