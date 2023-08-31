@@ -1,4 +1,4 @@
-cmake_minimum_required (VERSION 3.1)
+cmake_minimum_required (VERSION 3.1...3.15.0)
 
 ## Dummy basic information for meta project
 project (main)
