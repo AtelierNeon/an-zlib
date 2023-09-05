@@ -40,6 +40,7 @@ MY_CMAKE_COMMON_ARGUMENT_LIST=(
         "-DMY_REVISION=$PROJECT_REVISION"
         "-DCMAKE_SYSTEM_NAME=$SYSTEM_PLATFORM"
         "-DCMAKE_TRY_COMPILE_TARGET_TYPE=STATIC_LIBRARY"
+        "-DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF"
 )
 if [ "ON" = "$PROJECT_ZLIB_WITH_DISABLED_TEST_APPS" ]; then
     MY_CMAKE_COMMON_ARGUMENT_LIST+=("-DZLIB_WITH_DISABLED_TEST_APPS=$PROJECT_ZLIB_WITH_DISABLED_TEST_APPS")
@@ -67,8 +68,8 @@ fi
 
 
 ## Print build information
-echo "[$SYSTEM_PLATFORM] Project information: revision:" $PROJECT_REVISION
-echo "[$SYSTEM_PLATFORM] Project information: release type:" $PROJECT_RELEASE_TYPE
+echo "[$SYSTEM_PLATFORM] Project information: revision: $PROJECT_REVISION"
+echo "[$SYSTEM_PLATFORM] Project information: release type: $PROJECT_RELEASE_TYPE"
 echo "[$SYSTEM_PLATFORM] Project information: Disable clean build: $PROJECT_SHOULD_DISABLE_CLEAN_BUILD"
 echo "[$SYSTEM_PLATFORM] Project information: Zlib with disabled test apps: $PROJECT_ZLIB_WITH_DISABLED_TEST_APPS"
 
