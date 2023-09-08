@@ -24,6 +24,9 @@ $TempInstallFolder = Join-Path -Path $TempRootFolder -ChildPath 'i'
 ##
 ## Project config
 ##
+####
+#### Project level config
+####
 $ProjectRevision = if ($Env:BUILD_NUMBER) {$Env:BUILD_NUMBER} else {'9999'}
 $ProjectShouldDisableCleanBuild = if ($Env:MY_PROJECT_SHOULD_DISABLE_CLEAN_BUILD) {$Env:MY_PROJECT_SHOULD_DISABLE_CLEAN_BUILD} else {'OFF'}
 $ProjectShouldDisable32BitBuild = if ($Env:MY_PROJECT_SHOULD_DISABLE_32BIT_BUILD) {$Env:MY_PROJECT_SHOULD_DISABLE_32BIT_BUILD} else {'OFF'}
@@ -38,6 +41,9 @@ $ProjectWithStaticVcrt = if ($Env:MY_PROJECT_WITH_STATIC_VCRT) {$Env:MY_PROJECT_
 $ProjectWithWorkaroundArm64rt = if ($Env:MY_PROJECT_WITH_WORKAROUND_ARM64RT) {$Env:MY_PROJECT_WITH_WORKAROUND_ARM64RT} else {'OFF'}
 $ProjectWithWorkaroundOptGy = if ($Env:MY_PROJECT_WITH_WORKAROUND_OPT_GY) {$Env:MY_PROJECT_WITH_WORKAROUND_OPT_GY} else {'OFF'}
 $ProjectWithWorkaroundSpectre = if ($Env:MY_PROJECT_WITH_WORKAROUND_SPECTRE) {$Env:MY_PROJECT_WITH_WORKAROUND_SPECTRE} else {'OFF'}
+####
+#### Project component level config
+####
 $ProjectZlibWithDisabledTestApps = if ($Env:MY_PROJECT_ZLIB_WITH_DISABLED_TEST_APPS) {$Env:MY_PROJECT_ZLIB_WITH_DISABLED_TEST_APPS} else {'OFF'}
 
 ##
@@ -119,7 +125,7 @@ Write-Information "[PowerShell] Project information: Disable clean build: $Proje
 Write-Information "[PowerShell] Project information: CMake generator: `"$MyCmakeGenerator`""
 Write-Information "[PowerShell] Project information: CMake toolset: `"$ProjectToolset`""
 Write-Information "[PowerShell] Project information: CMake platform to build: $MyCmakePlatformToBuildListString"
-Write-Information "[PowerShell] Project information: Zlib with disabled test apps: $ProjectZlibWithDisabledTestApps"
+Write-Information "[PowerShell] Component information: Zlib with disabled test apps: $ProjectZlibWithDisabledTestApps"
 
 
 

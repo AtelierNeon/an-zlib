@@ -18,11 +18,17 @@ TEMP_INSTALL_DIR=$TEMP_ROOT_DIR/i
 ##
 ## Project config
 ##
+####
+#### Project level config
+####
 PROJECT_REVISION="${BUILD_NUMBER:=9999}"
 PROJECT_RELEASE_TYPE="${MY_PROJECT_RELEASE_TYPE:=Debug}"
 PROJECT_SHOULD_DISABLE_CLEAN_BUILD="${MY_PROJECT_SHOULD_DISABLE_CLEAN_BUILD:=OFF}"
 PROJECT_SHOULD_DISABLE_ARM_BUILD="${MY_PROJECT_SHOULD_DISABLE_ARM_BUILD:=OFF}"
 PROJECT_SHOULD_DISABLE_X86_BUILD="${MY_PROJECT_SHOULD_DISABLE_X86_BUILD:=OFF}"
+####
+#### Project component level config
+####
 PROJECT_ZLIB_WITH_DISABLED_TEST_APPS="${MY_PROJECT_ZLIB_WITH_DISABLED_TEST_APPS:=OFF}"
 
 ##
@@ -65,7 +71,7 @@ echo "[$SYSTEM_PLATFORM] Project information: revision: $PROJECT_REVISION"
 echo "[$SYSTEM_PLATFORM] Project information: release type: $PROJECT_RELEASE_TYPE"
 echo "[$SYSTEM_PLATFORM] Project information: Disable clean build: $PROJECT_SHOULD_DISABLE_CLEAN_BUILD"
 echo "[$SYSTEM_PLATFORM] Project information: architectures to build: $MY_DARWIN_ARCH_BUILD_LIST_STRING"
-echo "[$SYSTEM_PLATFORM] Project information: Zlib with disabled test apps: $PROJECT_ZLIB_WITH_DISABLED_TEST_APPS"
+echo "[$SYSTEM_PLATFORM] Component information: Zlib with disabled test apps: $PROJECT_ZLIB_WITH_DISABLED_TEST_APPS"
 
 
 
