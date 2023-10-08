@@ -2,6 +2,6 @@
     "cmake.buildDirectory": "${workspaceFolder}/build/vscode",
     "cmake.sourceDirectory": "${workspaceFolder}",
     "cmake.configureSettings": {
-        "ZLIB_WITH_DISABLED_TEST_APPS": "OFF"
+        "ZLIB_WITHOUT_TEST_APPS": "OFF"
     }
 }

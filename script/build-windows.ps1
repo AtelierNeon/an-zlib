@@ -44,7 +44,7 @@ $ProjectWithWorkaroundSpectre = if ($Env:MY_PROJECT_WITH_WORKAROUND_SPECTRE) {$E
 ####
 #### Project component level config
 ####
-$ProjectZlibWithDisabledTestApps = if ($Env:MY_PROJECT_ZLIB_WITH_DISABLED_TEST_APPS) {$Env:MY_PROJECT_ZLIB_WITH_DISABLED_TEST_APPS} else {'OFF'}
+$ProjectZlibWithoutTestApps = if ($Env:MY_PROJECT_ZLIB_WITHOUT_TEST_APPS) {$Env:MY_PROJECT_ZLIB_WITHOUT_TEST_APPS} else {'OFF'}
 
 ##
 ## My variables
@@ -54,8 +54,8 @@ $MyCmakeCommonArgumentList = @(
         "-T $ProjectToolset",
         "-DMY_REVISION=$ProjectRevision"
 )
-if ('ON'.Equals($ProjectZlibWithDisabledTestApps)) {
-    $MyCmakeCommonArgumentList += "-DZLIB_WITH_DISABLED_TEST_APPS=$ProjectZlibWithDisabledTestApps"
+if ('ON'.Equals($ProjectZlibWithoutTestApps)) {
+    $MyCmakeCommonArgumentList += "-DZLIB_WITHOUT_TEST_APPS=$ProjectZlibWithoutTestApps"
 }
 if ('ON'.Equals($ProjectWithSharedVcrt)) {
     $MyCmakeCommonArgumentList += "-DBUILD_WITH_SHARED_VCRT=$ProjectWithSharedVcrt"
@@ -125,7 +125,7 @@ Write-Information "[PowerShell] Project information: Disable clean build: $Proje
 Write-Information "[PowerShell] Project information: CMake generator: `"$MyCmakeGenerator`""
 Write-Information "[PowerShell] Project information: CMake toolset: `"$ProjectToolset`""
 Write-Information "[PowerShell] Project information: CMake platform to build: $MyCmakePlatformToBuildListString"
-Write-Information "[PowerShell] Component information: Zlib with disabled test apps: $ProjectZlibWithDisabledTestApps"
+Write-Information "[PowerShell] Component information: Zlib without test apps: $ProjectZlibWithoutTestApps"
 
 
 
