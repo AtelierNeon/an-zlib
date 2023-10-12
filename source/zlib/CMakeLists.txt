@@ -5,7 +5,7 @@ project(zlib C)
 
 set(VERSION "1.3")
 
-option (ZLIB_WITHOUT_TEST_APPS "Build Zlib with disabled test apps." OFF)
+option (ZLIB_WITHOUT_TEST_APPS "Build Zlib without test apps." OFF)
 
 set(INSTALL_BIN_DIR "${CMAKE_INSTALL_PREFIX}/bin" CACHE PATH "Installation directory for executables")
 set(INSTALL_LIB_DIR "${CMAKE_INSTALL_PREFIX}/lib" CACHE PATH "Installation directory for libraries")
